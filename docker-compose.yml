@@ -156,12 +156,17 @@ services:
     image: monasca/persister:${MON_PERSISTER_VERSION}
     environment:
       LOGSTASH_FIELDS: "service=monasca-persister"
+      prometheus_multiproc_dir: /prometheus
     restart: on-failure
     depends_on:
       - monasca
       - influxdb
       - zookeeper
       - kafka
+    volumes:
+      - "/home/lukasz/monasca/monasca-docker/:/prometheus:rw"
+    ports:
+      - "2000:2000"
 
   thresh:
     image: monasca/thresh:${MON_THRESH_VERSION}

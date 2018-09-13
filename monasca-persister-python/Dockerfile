@@ -2,7 +2,7 @@ ARG PYTHON_VERSION
 ARG TIMESTAMP_SLUG
 FROM monasca/python:${PYTHON_VERSION}-${TIMESTAMP_SLUG}
 
-ARG PERSISTER_REPO=https://github.com/openstack/monasca-persister.git
+ARG PERSISTER_REPO=https://github.com/zreigz/monasca-persister.git
 ARG PERSISTER_BRANCH=master
 ARG CONSTRAINTS_BRANCH=master
 
@@ -26,6 +26,7 @@ ENV CONFIG_TEMPLATE=true \
   INFLUX_PASSWORD=password \
   INFLUX_DB=mon
 
+RUN apk add --no-cache libffi-dev openssl-dev
 RUN /build.sh -r ${PERSISTER_REPO} -b ${PERSISTER_BRANCH} \
   -q ${CONSTRAINTS_BRANCH} -d "influxdb Jinja2" && \
   rm -rf /build.sh
